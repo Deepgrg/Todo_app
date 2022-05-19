@@ -4,6 +4,9 @@ const morgan = require("morgan");
 // Loading the .env file
 require("dotenv").config();
 
+const { HttpException } = require("./exceptions/httpException");
+const { router } = require("./routes");
+
 /**
  *
  * ------------- GENERAL SETUP -------------
@@ -16,17 +19,12 @@ app.use(morgan("dev")); // for logging
 app.use(express.json()); // for parsing json body
 app.use(express.urlencoded({ extended: true })); // for parsing urlencoded payloads
 
-app.set("views", "./views");
-app.set("view engine", "pug");
-
 /**
  *
  * ------------- APP ROUTES -------------
  *
  */
-app.get("/", (req, res, next) => {
-  res.render("index", { phrase: "Hello world" });
-});
+app.use(router);
 
 /**
  *
@@ -64,6 +62,11 @@ app.use((err, req, res, next) => {
   });
 });
 
+/**
+ *
+ * ------------- Server ----------------
+ *
+ */
 app.listen(PORT, () => {
   console.log(`
     Server running on port: ${PORT}
