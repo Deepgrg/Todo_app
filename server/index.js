@@ -6,6 +6,7 @@ require("dotenv").config();
 
 const { HttpException } = require("./exceptions/httpException");
 const { router } = require("./routes");
+const { sequelize } = require("./configs/database.config");
 
 /**
  *
@@ -18,6 +19,21 @@ const PORT = process.env.PORT || 8080;
 app.use(morgan("dev")); // for logging
 app.use(express.json()); // for parsing json body
 app.use(express.urlencoded({ extended: true })); // for parsing urlencoded payloads
+
+/**
+ *
+ * ------------- DATABASE CONNECTION -------------
+ *
+ */
+(async function () {
+  try {
+    await sequelize.authenticate();
+    console.log("Database connected");
+    await sequelize.sync({ force: true });
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
+})();
 
 /**
  *
