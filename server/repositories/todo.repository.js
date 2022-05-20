@@ -12,6 +12,35 @@ class TodoRepository {
     return todos;
   }
 
+  async getDoneTodos() {
+    const todos = await Todo.findAll({
+      where: {
+        todo_status: true,
+      },
+    });
+
+    if (todos.length === 0) {
+      throw new NotFoundException(`Todos are not done yet!`);
+    }
+
+    return todos;
+  }
+
+  async getUpcomingTodos() {
+    const todos = await Todo.findAll({
+      where: {
+        todo_status: false,
+      },
+      order: [["todo_date", "ASC"]],
+    });
+
+    if (todos.length === 0) {
+      throw new NotFoundException(`No upcoming todos!`);
+    }
+
+    return todos;
+  }
+
   async getOneTodo(todoId) {
     const todo = await Todo.findOne({
       where: {

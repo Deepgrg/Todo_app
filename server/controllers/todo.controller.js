@@ -4,7 +4,7 @@ const { successResponse } = require("../utils/responseHelper");
 class TodoController {
   async getAllTodos(req, res, next) {
     try {
-      const todos = await todoService.getAllTodos();
+      const todos = await todoService.getAllTodos(req.query);
       successResponse(res, 200, "Todos fetched successfully", todos);
     } catch (err) {
       next(err);

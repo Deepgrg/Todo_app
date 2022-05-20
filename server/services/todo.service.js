@@ -1,9 +1,23 @@
 const todoRepository = require("../repositories/todo.repository");
 
 class TodoService {
-  async getAllTodos() {
+  async getAllTodos(query) {
     try {
-      const todos = todoRepository.getAllTodos();
+      const { filter } = query;
+
+      let todos;
+      switch (filter) {
+        case "upcoming":
+          todos = todoRepository.getUpcomingTodos();
+          break;
+        case "done":
+          todos = todoRepository.getDoneTodos();
+          break;
+        default:
+          todos = todoRepository.getAllTodos();
+          break;
+      }
+
       return todos;
     } catch (err) {
       throw err;

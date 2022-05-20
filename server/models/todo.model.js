@@ -18,6 +18,10 @@ const Todo = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    todo_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
     todo_status: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
