@@ -48,7 +48,7 @@ app.use(router);
  *
  */
 // 404 error handler
-app.use((req, res, next) => {
+app.use((_req, _res, next) => {
   const err = new HttpException(404, "Route doesnot exist");
 
   next(err);
