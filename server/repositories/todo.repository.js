@@ -3,7 +3,9 @@ const { NotFoundException } = require("../exceptions/notFoundException");
 
 class TodoRepository {
   async getAllTodos() {
-    const todos = await Todo.findAll();
+    const todos = await Todo.findAll({
+      order: [["todo_id", "ASC"]],
+    });
 
     if (todos.length === 0) {
       throw new NotFoundException(`Todos not found`);
@@ -17,6 +19,7 @@ class TodoRepository {
       where: {
         todo_status: true,
       },
+      order: [["todo_id", "DESC"]],
     });
 
     if (todos.length === 0) {

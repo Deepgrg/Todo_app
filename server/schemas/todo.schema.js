@@ -1,7 +1,7 @@
 const Joi = require("joi").extend(require("@joi/date"));
 
 const todoFilterSchema = Joi.object({
-  filter: Joi.string().valid("upcoming", "done"),
+  filter: Joi.string().valid("upcoming", "done", "all"),
 });
 
 const todoIdSchema = Joi.object({

@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 
 // Loading the .env file
 require("dotenv").config();
@@ -19,6 +20,23 @@ const PORT = process.env.PORT || 8080;
 app.use(morgan("dev")); // for logging
 app.use(express.json()); // for parsing json body
 app.use(express.urlencoded({ extended: true })); // for parsing urlencoded payloads
+
+/**
+ *
+ * ------------- CORS -------------
+ *
+ */
+const whitelist = ["http://localhost:3000"];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+app.use(cors());
 
 /**
  *
@@ -61,14 +79,13 @@ app.use((err, req, res, next) => {
   const env = process.env.ENV;
 
   err.data = err.data || null;
-  if (env !== "production") {
-    err.data = err.data || err.stack || null;
-  }
+  // if (env !== "production") {
+  //   err.data = err.data || err.stack || null;
+  // }
 
   err.success = false;
   err.status = err.status || 500;
   err.message = err.message || "Something went wrong";
-  err.data = err.data || err.stack || null;
 
   res.status(err.status).json({
     success: err.success,

@@ -7,6 +7,9 @@ class TodoService {
 
       let todos;
       switch (filter) {
+        case "all":
+          todos = todoRepository.getAllTodos();
+          break;
         case "upcoming":
           todos = todoRepository.getUpcomingTodos();
           break;
